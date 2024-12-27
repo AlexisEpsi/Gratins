@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ingredient{% endblock %}
+
+{% block body %}
+    <h1>Ingredient</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ingredient.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ ingredient.nom }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ingredient_index') }}">back to list</a>
+
+    {% if app.user and ingredient.userId.id == app.user.id %}
+        <a href="{{ path('app_ingredient_edit', {'id': ingredient.id}) }}">edit</a>
+        {{ include('ingredient/_delete_form.html.twig') }}
+    {% endif %}
+
+
+    <h2>Recette</h2>
+
+    <div>
+        {% if ingredient.recetteIngredients is empty %}
+            <p>Aucune recette disponible pour cet ingrédient.</p>
+        {% else %}
+            {% for recetteIngredient in ingredient.recetteIngredients %}
+                <a href="{{ path('app_recette_show', {'id': recetteIngredient.recetteId.id}) }}">{{ recetteIngredient.recetteId.nom }}</a>
+            {% endfor %}
+        {% endif %}
+    </div>
+    </div>
+{% endblock %}

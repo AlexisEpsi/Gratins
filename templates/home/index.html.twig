@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gratins!{% endblock %}
+
+{% block body %}
+<header>
+    <div class="flex justify-between py-4 px-12">
+        <div>
+            <img src="logo.png" alt="" class="w-16 h-16">
+        </div>
+        <div class="flex gap-4 items-center">
+            {% if app.user %}      
+                <p>Bonjour, {{ app.user.userIdentifier }}!</p>
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Connexion</a>
+                <a href="{{ path('app_register') }}">Inscription</a>
+            {% endif %}
+        </div>
+    </div>
+    <nav class="flex justify-around p-4 bg-blue-700 text-white">
+        <a href="{{ path('app_ingredient_index') }}">Ingrédients</a>
+        <a href="{{ path('app_ingredient_new') }}">Ajouter un Ingrédients</a>
+        <a href="{{ path('app_recette_index') }}">Recettes</a>
+        <a href="{{ path('app_recette_new') }}">Ajouter une Recettes</a>
+        <a href="{{ path('app_search') }}">Rechercher</a>
+    </nav>  
+</header>
+
+{% endblock %}

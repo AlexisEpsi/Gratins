@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recette{% endblock %}
+
+{% block body %}
+    <h1>Recette</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ recette.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ recette.nom }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ recette.description }}</td>
+            </tr>
+            <tr>
+                <th>Duree</th>
+                <td>{{ recette.duree }}</td>
+            </tr>
+            <tr>
+                <th>Personnes</th>
+                <td>{{ recette.personnes }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ recette.image }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_recette_index') }}">back to list</a>
+
+    {% if app.user and recette.userId.id == app.user.id %}
+        <a href="{{ path('app_recette_edit', {'id': recette.id}) }}">edit</a>
+        {{ include('recette/_delete_form.html.twig') }}
+    {% endif %}
+
+    <h2>Ingrédients</h2>
+
+    <div>
+        {% if recette.recetteIngredients is empty %}
+            <p>Aucun ingrédient disponible pour cette recette.</p>
+        {% else %}
+            {% for recetteIngredient in recette.recetteIngredients %}
+                <div>{{ recetteIngredient.quantite }} <a href="{{ path('app_ingredient_show', {'id': recetteIngredient.ingredientId.id}) }}">{{ recetteIngredient.ingredientId.nom }}</a></div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <h2>Commentaires</h2>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Ajouter un commentaire</button>
+    {{ form_end(form) }}
+
+    <div>
+        {% for commentaire in commentaires %}
+            <div>{{ commentaire.texte }}</div>
+        {% else %}
+            <p>Aucun commentaire disponible pour cette recette.</p>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

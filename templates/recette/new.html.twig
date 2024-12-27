@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Recette{% endblock %}
+
+{% block body %}
+    <h1>Create new Recette</h1>
+
+    {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+    <div>
+        {{ form_label(form.nom, null, {'attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
+
+    <div>
+        {{ form_label(form.description, null, {'attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div>
+        {{ form_label(form.duree, null, {'attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+        {{ form_widget(form.duree, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500'}}) }}
+        {{ form_errors(form.duree) }}
+    </div>
+
+    <div>
+        {{ form_label(form.personnes, null, {'attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+        {{ form_widget(form.personnes, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500'}}) }}
+        {{ form_errors(form.personnes) }}
+    </div>
+
+    <div>
+        {{ form_label(form.image, null, {'attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+        {{ form_widget(form.image, {'attr': {'class': 'mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500'}}) }}
+        {{ form_errors(form.image) }}
+    </div>
+
+    <div>
+        {% for ingredient in ingredients %}
+            <div class="flex items-center space-x-4">
+                <label class="block text-sm font-medium text-gray-700">{{ ingredient.nom }}</label>
+                <input type="number" name="quantites[{{ ingredient.id }}]" id="quantites[{{ ingredient.id }}]" value="0" min="0" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500">
+            </div>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        {{ button_label|default('Save') }}
+    </button>
+{{ form_end(form) }}
+    <a href="{{ path('app_recette_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche de Recettes{% endblock %}
+
+{% block body %}
+    <h1>Recherche de Recettes</h1>
+
+    {{ form_start(form) }}
+    {{ form_widget(form.ingredients) }}
+    {{ form_end(form) }}
+
+    {% if recettes is not empty %}
+        <h2>Résultats de la recherche :</h2>
+        <div class="grid grid-cols-3 gap-4">
+            {% for recette in recettes %}
+            <a href="{{ path('app_recette_show', { id: recette.id }) }}" class="bg-blue-200">
+                <div class="overflow-hidden">
+                    <div class="max-h-96">
+                        <img src="images/{{ recette.image }}" alt="">
+                    </div>
+                    <div class="flex justify-between w-full">
+                        <div class="flex">
+                            <div>⏱️{{ recette.duree }}</div>
+                            <div>👥{{ recette.personnes }}</div>
+                        </div>
+                        <div>
+                            {% set favorisIds = favoris|map(favori => { 'recetteId': favori.recetteId is not null ? favori.recetteId.id : null, 'userId': favori.userId is not null ? favori.userId.id : null }) %}
+                            {% if app.user is null %}
+                                <a href="{{ path('app_login') }}">☆</a>
+                            {% else %}
+                                {% if favorisIds|filter(favori => favori.recetteId is not null and favori.recetteId == recette.id and favori.userId is not null and favori.userId == app.user.id)|length > 0 %}
+                                    <form action="{{ path('app_favoris_add', { recetteId: recette.id }) }}" method="post">
+                                        <button type="submit" class="text-xl">★</button>
+                                    </form>
+                                {% else %}
+                                    <form action="{{ path('app_favoris_add', { recetteId: recette.id }) }}" method="post">
+                                        <button type="submit" class="text-xl">☆</button>
+                                    </form>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div>{{ recette.nom }}</div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucune recette trouvée.</p>
+    {% endif %}
+{% endblock %}
